@@ -1,0 +1,11 @@
+### Update Request for patient
+PUT http://localhost:4000/patients/223e4567-e89b-12d3-a456-426614174012
+Content-Type: application/json
+
+{
+  "name": "Jack Ma",
+  "email": "jack24@gmail.com",
+  "address": "123 main Street",
+  "dateOfBirth": "1996-09-09"
+}
+###

@@ -1,0 +1,5 @@
+### Delete Api for deleting patient
+DELETE http://localhost:4000/patients/e0cc4de7-3534-4183-ac57-30e81f13ea52
+
+
+###
