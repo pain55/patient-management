@@ -3,11 +3,11 @@ POST http://localhost:4000/patients
 Content-Type: application/json
 
 {
-  "name": "Jack Ma",
-  "email": "jack23@gmail.com",
-  "address": "123 main Street",
-  "dateOfBirth": "1996-09-09",
-  "registeredDate": "2025-04-01"
+  "name": "Jack Frost",
+  "email": "jack.frost@gmail.com",
+  "address": "123 main Street, London",
+  "dateOfBirth": "1996-12-09",
+  "registeredDate": "2024-04-01"
 }
 
 ###

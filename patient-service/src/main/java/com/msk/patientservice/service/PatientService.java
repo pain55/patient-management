@@ -5,6 +5,7 @@ import com.msk.patientservice.dto.PatientRequestDTO;
 import com.msk.patientservice.dto.PatientResponseDTO;
 import com.msk.patientservice.exception.EmailAlreadyExistsException;
 import com.msk.patientservice.exception.PatientNotFoundException;
+import com.msk.patientservice.grpc.BillingServiceGrpcClient;
 import com.msk.patientservice.mapper.PatientMapper;
 import com.msk.patientservice.model.Patient;
 import com.msk.patientservice.repository.PatientRepository;
@@ -21,9 +22,12 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
 
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
+
     @Autowired
-    public PatientService(PatientRepository patientRepository) {
+    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient) {
         this.patientRepository = patientRepository;
+        this.billingServiceGrpcClient = billingServiceGrpcClient;
     }
 
     public List<PatientResponseDTO> getPatients() {
@@ -41,6 +45,9 @@ public class PatientService {
         }
 
         Patient newPatient = patientRepository.save(PatientMapper.toModel(patientRequestDTO));
+
+//       this is gRPC call to create billing account which calls billing-service
+        billingServiceGrpcClient.createBillingAccount(newPatient.getPatientId().toString(), newPatient.getName(), newPatient.getEmail());
 
         return PatientMapper.toDTO(newPatient);
     }

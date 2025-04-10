@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+// this gonna split our service req and res files all into different files by default code generation will put everything in same file.
+option java_multiple_files = true;
+
+// this ensures that the code generation puts all of our code in a package called billing
+option java_package = "billing";
+
+// its like a service with method createBilling which can be called by other services to createBillingAccount
+service BillingService {
+  rpc CreateBillingAccount (BillingRequest) returns (BillingResponse);
+}
+
+// This is similar to a DTO
+message BillingRequest {
+  string patientId = 1; // =1  doesn't we are assigning the var patientId = 1 but it means that protoBuf will use it for serialization and de-serialization, It should be unique.
+  string name = 2;
+  string email = 3;
+}
+
+message BillingResponse {
+  string accountId = 1;
+  string status = 2;
+}
