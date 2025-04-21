@@ -6,6 +6,7 @@ import com.msk.patientservice.dto.PatientResponseDTO;
 import com.msk.patientservice.exception.EmailAlreadyExistsException;
 import com.msk.patientservice.exception.PatientNotFoundException;
 import com.msk.patientservice.grpc.BillingServiceGrpcClient;
+import com.msk.patientservice.kafka.KafkaProducer;
 import com.msk.patientservice.mapper.PatientMapper;
 import com.msk.patientservice.model.Patient;
 import com.msk.patientservice.repository.PatientRepository;
@@ -24,10 +25,13 @@ public class PatientService {
 
     private final BillingServiceGrpcClient billingServiceGrpcClient;
 
+    private final KafkaProducer kafkaProducer;
+
     @Autowired
-    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient) {
+    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient, KafkaProducer kafkaProducer) {
         this.patientRepository = patientRepository;
         this.billingServiceGrpcClient = billingServiceGrpcClient;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public List<PatientResponseDTO> getPatients() {
@@ -48,6 +52,9 @@ public class PatientService {
 
 //       this is gRPC call to create billing account which calls billing-service
         billingServiceGrpcClient.createBillingAccount(newPatient.getPatientId().toString(), newPatient.getName(), newPatient.getEmail());
+
+//      we are calling sendEvent() which is used to send event to kafkaConsumer over the topic.
+        kafkaProducer.sendEvent(newPatient);
 
         return PatientMapper.toDTO(newPatient);
     }

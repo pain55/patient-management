@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+// it telling to create a package in target as patient.events and place the files inside it
+package patient.events;
+
+option java_multiple_files = true;
+
+
+// this thing is dependent on bussiness logic like what we want to send over in event.
+//for example we are taking this values.
+message PatientEvent {
+  string patientId = 1;
+  string name = 2;
+  string email = 3;
+  string event_type = 4;
+}

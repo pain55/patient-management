@@ -1,12 +1,12 @@
 ### POST request to create a new patient
-POST http://localhost:4000/patients
+POST http://localhost:4004/api/patients
 Content-Type: application/json
 
 {
-  "name": "Jack Frost",
-  "email": "jack.frost@gmail.com",
+  "name": "Jack Frost API Gateway test",
+  "email": "jack.frostAPIGatewayTest1@gmail.com",
   "address": "123 main Street, London",
-  "dateOfBirth": "1996-12-09",
+  "dateOfBirth": "1996-12-26",
   "registeredDate": "2024-04-01"
 }
 
