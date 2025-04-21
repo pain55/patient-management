@@ -1,0 +1,35 @@
+
+# api-gateway port number is 4004
+server:
+  port: 4004
+
+
+spring:
+  cloud:
+    gateway:
+      routes:
+#        REST Client -> http://localhost:4004/api/patients
+#        API GATEWAY -> http://patient-service:4000/patients
+#        PATIENT SERVICE( Spring Boot APP0 -> /patients  -> returns Patients Array
+        - id: patient-service-route
+#         the api-gateway converts the localhost:4004 into below specified uri
+          uri: http://patient-service:4000
+#         maps it to bellow predicate
+          predicates:
+            - Path=/api/patients/**
+#         from the path /api/patients/** we need to strip api to call our internal controllers to we are strips api from below code.
+          filters:
+            - StripPrefix=1
+
+
+
+#        REST-CLIENT -> http://localhost:4004/api-docs/patients
+#        API_GATEWAY -> http://localhost:4000/v3/api-docs
+#        /api-docs/patients gets rewritten into /v3/api-docs
+
+        - id: api-docs-patient-route
+          uri: http://patient-service:4000
+          predicates:
+            - Path=/api-docs/patients
+          filters:
+            - RewritePath=/api-docs/patients,/v3/api-docs
